@@ -1,0 +1,9 @@
+module dmi.sws.dlview {
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires JVisa;
+
+
+    opens dmi.sws.dlview to javafx.fxml;
+    exports dmi.sws.dlview;
+}

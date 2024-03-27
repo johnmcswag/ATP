@@ -1,0 +1,56 @@
+.root {
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color:transparent;
+}
+
+.label.info {
+    -fx-text-fill: red;
+    -fx-background-color: black;
+    -fx-background-radius: 8px;
+    -fx-border-color: darkgray;
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+    -fx-border-radius: 6px;
+}
+
+.label.slider {
+    -fx-font-size: 12px;
+    -fx-background-color: lightgray;
+    -fx-background-radius: 4px;
+    -fx-border-color: black;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-border-radius: 3px;
+}
+
+.controlContainer {
+    -fx-background-color: whitesmoke;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-padding: 4px;
+}
+
+.slider .track {
+    -fx-pref-width: 10px;
+    -fx-border-radius: 0;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-background-radius: 0;
+    -fx-background-color: lightgrey;
+}
+
+
+.slider .thumb {
+    -fx-pref-height: 20px;
+    -fx-pref-width: 60px;
+    -fx-background-radius: 5px;
+    -fx-border-color: black;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+}
+
+.backdrop {
+    -fx-background-color: rgba(0,0,0,0.2);
+}
