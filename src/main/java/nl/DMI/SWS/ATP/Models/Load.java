@@ -1,10 +1,9 @@
-package dmi.sws.dlview.Models;
+package nl.DMI.SWS.ATP.Models;
 
-import dmi.sws.dlview.Components.DLSlider;
-import dmi.sws.dlview.Exception.InstrumentException;
-import dmi.sws.dlview.Service.DLService;
+import nl.DMI.SWS.ATP.Components.DLSlider;
+import nl.DMI.SWS.ATP.Exception.InstrumentException;
 
-import static dmi.sws.dlview.util.Math.toFixed;
+import static nl.DMI.SWS.ATP.util.Math.toFixed;
 
 public class Load {
     private static int loadCount = 0;
@@ -17,6 +16,7 @@ public class Load {
     private final int ROUNDINGDIGITS = 3;
     private int loadIndex = 0;
     private DLSlider slider = null;
+    private boolean isEnabled = false;
 
     public Load(int channel, Instrument instrument) throws InstrumentException {
         this.loadIndex = ++loadCount;
@@ -40,11 +40,13 @@ public class Load {
     public void enable() throws InstrumentException {
         changeToChannel();
         INSTRUMENT.write("OUTP ON");
+        isEnabled = true;
     }
 
     public void disable() throws InstrumentException {
         changeToChannel();
         INSTRUMENT.write("OUTP OFF");
+        isEnabled = false;
     }
 
     public double getCurrent() throws InstrumentException {
@@ -73,6 +75,10 @@ public class Load {
 
     public void setSlider(DLSlider slider) {
         this.slider = slider;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
     }
 
     @Override

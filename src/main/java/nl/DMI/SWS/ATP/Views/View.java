@@ -1,8 +1,8 @@
-package dmi.sws.dlview.Views;
+package nl.DMI.SWS.ATP.Views;
 
 import javafx.scene.layout.StackPane;
 
-public abstract class View extends StackPane implements IView {
+public abstract class View extends StackPane {
     public String title = "Test!";
 
     public String getTitle() {

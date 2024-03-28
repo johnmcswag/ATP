@@ -1,9 +1,8 @@
-package dmi.sws.dlview.Service;
+package nl.DMI.SWS.ATP.Service;
 
-import dmi.sws.dlview.DTO.InstrumentInfoDTO;
-import dmi.sws.dlview.Exception.InstrumentException;
-import dmi.sws.dlview.Models.Instrument;
-import dmi.sws.dlview.Singleton.ResourceManager;
+import nl.DMI.SWS.ATP.DTO.InstrumentInfoDTO;
+import nl.DMI.SWS.ATP.Models.Instrument;
+import nl.DMI.SWS.ATP.Singleton.ResourceManager;
 import xyz.froud.jvisa.JVisaException;
 import xyz.froud.jvisa.JVisaResourceManager;
 
@@ -20,7 +19,8 @@ public class InstrumentService {
             if (resourceNames.length == 0) return resources;
             resources = Arrays.asList(resourceNames);
         } catch (JVisaException e) {
-            System.out.println(e);
+            System.out.println("Error finding resources. Check GPIB cable.");
+            System.out.println(e.getMessage());
         }
         return resources;
     }
@@ -39,7 +39,8 @@ public class InstrumentService {
                 instrument.close();
                 instruments.add(new InstrumentInfoDTO(IDN, resourceName));
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
+                instruments.add(new InstrumentInfoDTO("Not Found", resourceName));
             }
         }
         return instruments;

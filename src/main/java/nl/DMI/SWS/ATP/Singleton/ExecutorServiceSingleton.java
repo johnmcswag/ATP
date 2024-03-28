@@ -1,4 +1,4 @@
-package dmi.sws.dlview.Singleton;
+package nl.DMI.SWS.ATP.Singleton;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

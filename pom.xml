@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>DMI.SWS</groupId>
-    <artifactId>DLView</artifactId>
+    <groupId>nl.DMI.SWS</groupId>
+    <artifactId>ATP</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>DLView</name>
+    <name>ATP</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -70,7 +70,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>dmi.sws.dlview/dmi.sws.dlview.HelloApplication</mainClass>
+                            <mainClass>dmi.sws.dlview/nl.DMI.SWS.ATP.ATPApplication</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
@@ -91,7 +91,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>dmi.sws.dlview.HelloApplication</mainClass>
+                            <mainClass>nl.DMI.SWS.ATP.ATPApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -108,7 +108,7 @@
                     <!-- MainClass in mainfest make a executable jar -->
                     <archive>
                         <manifest>
-                            <mainClass>dmi.sws.dlview.HelloApplication</mainClass>
+                            <mainClass>nl.DMI.SWS.ATP.ATPApplication</mainClass>
                         </manifest>
                     </archive>
 

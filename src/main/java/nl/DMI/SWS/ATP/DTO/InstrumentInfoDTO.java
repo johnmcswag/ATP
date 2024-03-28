@@ -1,4 +1,4 @@
-package dmi.sws.dlview.DTO;
+package nl.DMI.SWS.ATP.DTO;
 
 public class InstrumentInfoDTO {
     private String IDN;

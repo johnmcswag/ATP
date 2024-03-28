@@ -1,13 +1,9 @@
-package dmi.sws.dlview.Views;
+package nl.DMI.SWS.ATP.Views;
 
-import dmi.sws.dlview.Components.DLSlider;
-import dmi.sws.dlview.Models.Load;
-import dmi.sws.dlview.Service.DLService;
+import nl.DMI.SWS.ATP.Components.DLSlider;
+import nl.DMI.SWS.ATP.Models.Load;
+import nl.DMI.SWS.ATP.Service.DLService;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DLView extends View {
     DLService service;
@@ -25,8 +21,6 @@ public class DLView extends View {
 
     @Override
     public void unload() {
-        for(Load load: service.getLoads()) {
-            load.getSlider().unload();
-        }
+        service.close();
     }
 }

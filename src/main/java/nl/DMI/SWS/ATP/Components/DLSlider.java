@@ -1,10 +1,6 @@
-package dmi.sws.dlview.Components;
+package nl.DMI.SWS.ATP.Components;
 
-import dmi.sws.dlview.Exception.InstrumentException;
-import dmi.sws.dlview.Models.Load;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import nl.DMI.SWS.ATP.Models.Load;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -13,14 +9,10 @@ import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.animation.PauseTransition;
-import javafx.util.Duration;
 
 import java.util.Optional;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
-import static dmi.sws.dlview.util.Math.toFixed;
+import static nl.DMI.SWS.ATP.util.Math.toFixed;
 
 public class DLSlider {
 
@@ -46,7 +38,7 @@ public class DLSlider {
         voltageLabel.getStyleClass().add("info");
         currentLabel.getStyleClass().add("info");
 
-        loadLabel.setText(load.toString());
+        loadLabel.setText("DISABLED");
 
         container.getChildren().addAll(loadLabel, voltageLabel, currentLabel);
 
@@ -59,11 +51,13 @@ public class DLSlider {
         minCurrentLabel.setText("0");
 
         Slider slider = createSlider();
+        slider.setDisable(true);
         sliderControlContainer.getChildren().addAll(maxCurrentLabel, slider, minCurrentLabel);
         sliderControlContainer.setAlignment(Pos.TOP_CENTER);
         sliderControlContainer.getStyleClass().add("controlContainer");
 
         Button setButton = new Button("SET");
+        setButton.setDisable(true);
         setButton.setMaxWidth(Double.MAX_VALUE);
         setButton.setAlignment(Pos.CENTER);
         setButton.setOnAction((value) -> {
@@ -111,42 +105,12 @@ public class DLSlider {
         controlWrapper.setAlignment(Pos.CENTER);
         controlWrapper.getChildren().add(controlContainer);
         container.getChildren().add(controlWrapper);
-        toggleDLSlider(false);
     }
 
     private void toggleDLSlider(boolean state) {
         System.out.println("toggleDLSlider");
         System.out.println("State: " + state);
-        HBox controlWrapper = (HBox) getContainer().getChildren().get(3);
-        VBox controlContainer = (VBox) controlWrapper.getChildren().get(0);
-
-        Slider slider = (Slider) ((VBox) controlContainer.getChildren().get(0)).getChildren().get(1);
-        Button set = (Button) controlContainer.getChildren().get(1);
-        Label loadLabel = (Label) getContainer().getChildren().get(0);
-
-        try {
-            if(state) {
-                load.enable();
-            } else {
-                load.disable();
-            }
-        } catch (InstrumentException e) {
-            System.out.println("Issue toggling " + load.toString());
-            System.out.println(e);
-        }
-
-        Platform.runLater(() -> {
-            set.setDisable(!state);
-            slider.setDisable(!state);
-
-            if(state) {
-                loadLabel.setText(load.toString());
-            } else {
-                loadLabel.setText("DISABLED");
-                slider.setValue(0.0);
-            }
-            isEnabled = state;
-        });
+        this.isEnabled = state;
     }
 
     private Label createLabel() {
@@ -182,9 +146,7 @@ public class DLSlider {
         return slider;
     }
 
-    public void unload() {
-//        executorService.shutdown();
-    }
+    public void unload() {}
 
     public boolean isEnabled() {
         return isEnabled;

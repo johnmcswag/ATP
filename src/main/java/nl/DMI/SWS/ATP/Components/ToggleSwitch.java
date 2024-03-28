@@ -1,4 +1,4 @@
-package dmi.sws.dlview.Components;
+package nl.DMI.SWS.ATP.Components;
 
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Pos;

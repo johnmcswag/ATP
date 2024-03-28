@@ -1,6 +1,6 @@
-package dmi.sws.dlview.Models;
+package nl.DMI.SWS.ATP.Models;
 
-import dmi.sws.dlview.Exception.InstrumentException;
+import nl.DMI.SWS.ATP.Exception.InstrumentException;
 import xyz.froud.jvisa.*;
 
 public class Instrument {

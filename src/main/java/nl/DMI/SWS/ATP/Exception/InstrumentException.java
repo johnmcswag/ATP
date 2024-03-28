@@ -1,4 +1,4 @@
-package dmi.sws.dlview.Exception;
+package nl.DMI.SWS.ATP.Exception;
 
 public class InstrumentException extends Exception {
 

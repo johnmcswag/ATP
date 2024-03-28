@@ -1,13 +1,14 @@
-package dmi.sws.dlview.Service;
+package nl.DMI.SWS.ATP.Service;
 
-import dmi.sws.dlview.Components.DLSlider;
-import dmi.sws.dlview.DTO.InstrumentInfoDTO;
-import dmi.sws.dlview.Exception.InstrumentException;
-import dmi.sws.dlview.Models.DynamicLoad;
-import dmi.sws.dlview.Models.Load;
-import dmi.sws.dlview.Singleton.ExecutorServiceSingleton;
-import dmi.sws.dlview.Singleton.ResourceManager;
+import nl.DMI.SWS.ATP.Components.DLSlider;
+import nl.DMI.SWS.ATP.DTO.InstrumentInfoDTO;
+import nl.DMI.SWS.ATP.Exception.InstrumentException;
+import nl.DMI.SWS.ATP.Models.DynamicLoad;
+import nl.DMI.SWS.ATP.Models.Load;
+import nl.DMI.SWS.ATP.Singleton.ExecutorServiceSingleton;
+import nl.DMI.SWS.ATP.Singleton.ResourceManager;
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
@@ -16,18 +17,21 @@ import xyz.froud.jvisa.JVisaResourceManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static dmi.sws.dlview.util.Math.toFixed;
+import static nl.DMI.SWS.ATP.util.Math.toFixed;
 
 public class DLService {
     private DynamicLoad DLLoad1;
     private DynamicLoad DLLoad2;
     private List<Load> loads = new ArrayList<>();
-
     private JVisaResourceManager rm;
+    private final int taskPeriod_ms = 100;
+
+    private Future<?> task;
 
     public DLService() {
 
@@ -49,8 +53,9 @@ public class DLService {
             loads.addAll(DLLoad2.LOADS.values());
 
             ScheduledExecutorService scheduler =  ExecutorServiceSingleton.getInstance();
-            scheduler.scheduleAtFixedRate(this::measureTask, 0, 250, TimeUnit.MILLISECONDS);
+            task = scheduler.scheduleAtFixedRate(this::measureTask, 0, this.taskPeriod_ms, TimeUnit.MILLISECONDS);
         } catch (InstrumentException e) {
+            System.out.println("Error setting up dynamic loads.");
             System.out.println(e.getMessage());
         }
 
@@ -69,11 +74,24 @@ public class DLService {
         return loads;
     }
 
+    public void close() {
+        try {
+            task.cancel(true);
+            DLLoad1.close();
+            DLLoad2.close();
+        } catch (Exception e) {
+            System.out.println("Error closing Dynamic loads.");
+            System.out.println(e.getMessage());
+        }
+    }
+
     private void measureTask() {
         try {
             for (int i = 0; i < loads.size(); i++) {
+                if(task.isCancelled() || task.isCancelled()) return;
                 Load load = loads.get(i);
                 DLSlider slider = load.getSlider();
+                if(slider.isEnabled() != load.isEnabled()) toggleDLSlider(slider);
                 if(!slider.isEnabled()) continue;
                 measureVoltTask(slider);
                 measureCurrTask(slider);
@@ -82,10 +100,10 @@ public class DLService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
     }
 
     private void measureVoltTask(DLSlider slider) {
+        if(task.isCancelled() || task.isCancelled()) return;
         VBox sliderContainer = slider.getContainer();
         Load load = slider.getLoad();
         try {
@@ -101,6 +119,7 @@ public class DLService {
     }
 
     private void measureCurrTask(DLSlider slider) {
+        if(task.isCancelled() || task.isCancelled()) return;
         VBox sliderContainer = slider.getContainer();
         Load load = slider.getLoad();
         try {
@@ -118,6 +137,7 @@ public class DLService {
     }
 
     private void setCurrTask(DLSlider slider) {
+        if(task.isCancelled() || task.isCancelled()) return;
         VBox sliderContainer = slider.getContainer();
         Load load = slider.getLoad();
         try {
@@ -142,6 +162,43 @@ public class DLService {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private void toggleDLSlider(DLSlider slider) {
+        if(task.isCancelled() || task.isCancelled()) return;
+        VBox sliderContainer = slider.getContainer();
+        Load load = slider.getLoad();
+
+        HBox controlWrapper = (HBox) sliderContainer.getChildren().get(3);
+        VBox controlContainer = (VBox) controlWrapper.getChildren().get(0);
+
+        Slider sliderControl = (Slider) ((VBox) controlContainer.getChildren().get(0)).getChildren().get(1);
+        Button set = (Button) controlContainer.getChildren().get(1);
+        Label loadLabel = (Label) sliderContainer.getChildren().get(0);
+        boolean state = slider.isEnabled();
+
+        try {
+            if(state) {
+                load.enable();
+            } else {
+                load.disable();
+            }
+        } catch (InstrumentException e) {
+            System.out.println("Issue toggling " + load);
+            System.out.println(e.getMessage());
+        }
+
+        Platform.runLater(() -> {
+            set.setDisable(!state);
+            sliderControl.setDisable(!state);
+
+            if(state) {
+                loadLabel.setText(load.toString());
+            } else {
+                loadLabel.setText("DISABLED");
+                sliderControl.setValue(0.0);
+            }
+        });
 
     }
 }
