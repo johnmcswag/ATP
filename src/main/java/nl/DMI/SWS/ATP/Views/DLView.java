@@ -1,5 +1,9 @@
 package nl.DMI.SWS.ATP.Views;
 
+import javafx.geometry.Pos;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.paint.Color;
 import nl.DMI.SWS.ATP.Components.DLSlider;
 import nl.DMI.SWS.ATP.Models.Load;
 import nl.DMI.SWS.ATP.Service.DLService;
@@ -11,6 +15,7 @@ public class DLView extends View {
         title = "Dynamic Load Control";
         HBox sliderContainer = new HBox(8);
         this.getChildren().add(sliderContainer);
+        sliderContainer.setAlignment(Pos.TOP_CENTER);
         service = new DLService();
         service.discoverLoads();
         for(Load load: service.getLoads()) {

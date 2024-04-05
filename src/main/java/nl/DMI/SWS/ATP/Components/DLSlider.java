@@ -1,5 +1,7 @@
 package nl.DMI.SWS.ATP.Components;
 
+import javafx.application.Platform;
+import javafx.scene.paint.Color;
 import nl.DMI.SWS.ATP.Models.Load;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -55,6 +57,8 @@ public class DLSlider {
         sliderControlContainer.getChildren().addAll(maxCurrentLabel, slider, minCurrentLabel);
         sliderControlContainer.setAlignment(Pos.TOP_CENTER);
         sliderControlContainer.getStyleClass().add("controlContainer");
+        VBox.setVgrow(sliderControlContainer, Priority.ALWAYS);
+
 
         Button setButton = new Button("SET");
         setButton.setDisable(true);
@@ -73,7 +77,7 @@ public class DLSlider {
             HBox content = new HBox(16);
             Text text = new Text("Input new max value");
             TextField input = new TextField();
-
+            input.setOnAction((event) -> okButton.fire());
             input.textProperty().addListener((observable, oldValue, newValue) -> {
                 okButton.setDisable(!newValue.matches("^[0-9]+(\\.[0-9])?$"));
             });
@@ -86,9 +90,12 @@ public class DLSlider {
                 }
                 return null;
             });
-            Optional<Double> test = dialog.showAndWait();
-            if(test.isPresent()) {
-                double newValue = test.get();
+
+            Platform.runLater(input::requestFocus);
+
+            Optional<Double> dialogValue = dialog.showAndWait();
+            if(dialogValue.isPresent()) {
+                double newValue = dialogValue.get();
                 maxCurrentLabel.setText(newValue + "");
                 slider.setMax(newValue);
             }
@@ -104,6 +111,7 @@ public class DLSlider {
         HBox controlWrapper = new HBox();
         controlWrapper.setAlignment(Pos.CENTER);
         controlWrapper.getChildren().add(controlContainer);
+        VBox.setVgrow(controlWrapper, Priority.ALWAYS);
         container.getChildren().add(controlWrapper);
     }
 
@@ -143,6 +151,7 @@ public class DLSlider {
         slider.setMajorTickUnit(steps);
         slider.setMinorTickCount(0);
         slider.setSnapToTicks(true);
+        VBox.setVgrow(slider, Priority.ALWAYS);
         return slider;
     }
 

@@ -5,7 +5,6 @@ import nl.DMI.SWS.ATP.DTO.InstrumentInfoDTO;
 import nl.DMI.SWS.ATP.Exception.InstrumentException;
 import nl.DMI.SWS.ATP.Models.DynamicLoad;
 import nl.DMI.SWS.ATP.Models.Load;
-import nl.DMI.SWS.ATP.Singleton.ExecutorServiceSingleton;
 import nl.DMI.SWS.ATP.Singleton.ResourceManager;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -18,24 +17,21 @@ import xyz.froud.jvisa.JVisaResourceManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static nl.DMI.SWS.ATP.util.Math.toFixed;
 
-public class DLService {
+public class DLService extends DeviceService {
     private DynamicLoad DLLoad1;
     private DynamicLoad DLLoad2;
     private List<Load> loads = new ArrayList<>();
     private JVisaResourceManager rm;
-    private final int taskPeriod_ms = 100;
-
-    private Future<?> task;
 
     public DLService() {
-
+        taskPeriod_ms = 100;
         rm = ResourceManager.getResourceManager();
+        startExecutor();
     }
 
     public List<DynamicLoad> discoverLoads() {
@@ -51,9 +47,6 @@ public class DLService {
 
             loads.addAll(DLLoad1.LOADS.values());
             loads.addAll(DLLoad2.LOADS.values());
-
-            ScheduledExecutorService scheduler =  ExecutorServiceSingleton.getInstance();
-            task = scheduler.scheduleAtFixedRate(this::measureTask, 0, this.taskPeriod_ms, TimeUnit.MILLISECONDS);
         } catch (InstrumentException e) {
             System.out.println("Error setting up dynamic loads.");
             System.out.println(e.getMessage());
@@ -74,9 +67,10 @@ public class DLService {
         return loads;
     }
 
+    @Override
     public void close() {
+        super.close();
         try {
-            task.cancel(true);
             DLLoad1.close();
             DLLoad2.close();
         } catch (Exception e) {
@@ -85,14 +79,14 @@ public class DLService {
         }
     }
 
-    private void measureTask() {
+    @Override
+    protected void updateTask() {
         try {
-            for (int i = 0; i < loads.size(); i++) {
-                if(task.isCancelled() || task.isCancelled()) return;
-                Load load = loads.get(i);
+            for (Load load : loads) {
+                if (task.isCancelled() || task.isCancelled()) return;
                 DLSlider slider = load.getSlider();
-                if(slider.isEnabled() != load.isEnabled()) toggleDLSlider(slider);
-                if(!slider.isEnabled()) continue;
+                if (slider.isEnabled() != load.isEnabled()) toggleDLSlider(slider);
+                if (!slider.isEnabled()) continue;
                 measureVoltTask(slider);
                 measureCurrTask(slider);
                 setCurrTask(slider);

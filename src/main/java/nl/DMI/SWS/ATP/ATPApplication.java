@@ -1,7 +1,6 @@
 package nl.DMI.SWS.ATP;
 
 import nl.DMI.SWS.ATP.Service.ViewLoader;
-import nl.DMI.SWS.ATP.Singleton.ExecutorServiceSingleton;
 import nl.DMI.SWS.ATP.Singleton.ResourceManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -20,9 +19,8 @@ public class ATPApplication extends Application {
     @Override
     public void stop() {
         try {
-            vl.unload();
+            ViewLoader.unload();
             rm.close();
-            ExecutorServiceSingleton.shutdown();
             super.stop();
         } catch (Exception e) {
             System.out.println(e.getMessage());
