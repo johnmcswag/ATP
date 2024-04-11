@@ -1,9 +1,6 @@
 package nl.DMI.SWS.ATP.Views;
 
 import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.paint.Color;
 import nl.DMI.SWS.ATP.Components.DLSlider;
 import nl.DMI.SWS.ATP.Models.Load;
 import nl.DMI.SWS.ATP.Service.DLService;

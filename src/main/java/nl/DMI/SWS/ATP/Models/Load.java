@@ -32,7 +32,6 @@ public class Load {
 
     private void changeToChannel() throws InstrumentException {
         if(currentLoadIndex == channel) return;
-//        System.out.println("Changing channel to: " + channel);
         INSTRUMENT.write("INST " + channel);
         currentLoadIndex = channel;
     }
@@ -58,7 +57,6 @@ public class Load {
         if (current > MAX_CURRENT) {
             current = (float) MAX_CURRENT;
             System.out.println("Current is too high.");
-//                throw new InstrumentException("Current is too high");
         }
         changeToChannel();
         INSTRUMENT.write("CURRENT " + current);
@@ -85,21 +83,4 @@ public class Load {
     public String toString() {
         return "Load-" + loadIndex;
     }
-
-    //    @Override
-//    public String toString() {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("Load{").append("\n");
-//        sb.append("\tchannel=").append(channel).append("\n");
-//        sb.append("\tMAX_CURRENT=").append(MAX_CURRENT).append("\n");
-//        sb.append("\tMAX_VOLTAGE=").append(MAX_VOLTAGE).append("\n");
-//        try {
-//            sb.append("\tcurrent=").append(getCurrent()).append("\n");
-//            sb.append("\tvoltage=").append(getVoltage()).append("\n");
-//        } catch (InstrumentException e) {
-//            throw new RuntimeException(e);
-//        }
-//        sb.append('}');
-//        return sb.toString();
-//    }
 }

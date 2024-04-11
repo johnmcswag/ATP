@@ -1,11 +1,8 @@
 package nl.DMI.SWS.ATP.Views;
 
 import javafx.geometry.Pos;
-import javafx.scene.control.SplitPane;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import nl.DMI.SWS.ATP.Enum.ViewType;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import nl.DMI.SWS.ATP.Service.ViewLoader;
 

@@ -1,7 +1,6 @@
 package nl.DMI.SWS.ATP.Components;
 
 import javafx.application.Platform;
-import javafx.scene.paint.Color;
 import nl.DMI.SWS.ATP.Models.Load;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -126,6 +125,7 @@ public class DLSlider {
         label.setFont(Font.font(18));
         label.setMaxWidth(Double.MAX_VALUE);
         label.setAlignment(Pos.CENTER);
+        label.getStyleClass().add("sliderLabel");
         return label;
     }
 

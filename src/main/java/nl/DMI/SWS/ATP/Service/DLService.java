@@ -16,8 +16,6 @@ import xyz.froud.jvisa.JVisaResourceManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static nl.DMI.SWS.ATP.util.Math.toFixed;
