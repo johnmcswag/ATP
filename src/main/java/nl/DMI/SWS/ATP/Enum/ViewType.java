@@ -1,6 +1,6 @@
 package nl.DMI.SWS.ATP.Enum;
 
-import nl.DMI.SWS.ATP.Views.DLView;
+import nl.DMI.SWS.ATP.Views.DLCView;
 import nl.DMI.SWS.ATP.Views.HomeView;
 import nl.DMI.SWS.ATP.Views.View;
 import javafx.scene.Parent;

@@ -4,19 +4,19 @@ import nl.DMI.SWS.ATP.Exception.InstrumentException;
 import xyz.froud.jvisa.*;
 import java.util.HashMap;
 
-public class DynamicLoad extends Instrument {
+public class N3300A extends Instrument {
 
     private final int CHANNEL_COUNT;
-    public final HashMap<Integer, Load> LOADS = new HashMap<>();
+    public final HashMap<Integer, N3300AModule> LOADS = new HashMap<>();
 
 
-    public DynamicLoad(JVisaResourceManager resourceManager, String visaResourceName) throws InstrumentException {
+    public N3300A(JVisaResourceManager resourceManager, String visaResourceName) throws InstrumentException {
         super(resourceManager, visaResourceName);
         CHANNEL_COUNT = Integer.parseInt(query("CHANNEL? MAX"));
         setupLoads();
     }
 
-    public DynamicLoad(JVisaInstrument jVisaInstrument) throws InstrumentException {
+    public N3300A(JVisaInstrument jVisaInstrument) throws InstrumentException {
         super(jVisaInstrument);
         CHANNEL_COUNT = Integer.parseInt(query("CHANNEL? MAX"));
         setupLoads();
@@ -25,7 +25,7 @@ public class DynamicLoad extends Instrument {
     private void setupLoads() {
         for (int i = 1; i <= CHANNEL_COUNT; i++) {
             try {
-                LOADS.put(i, new Load(i, this));
+                LOADS.put(i, new N3300AModule(i, this));
             } catch (InstrumentException e) {
                 System.out.println("Issue with load: " + i);
                 e.printStackTrace();
@@ -33,7 +33,7 @@ public class DynamicLoad extends Instrument {
         }
     }
 
-    public Load getLoad(int channel) {
+    public N3300AModule getLoad(int channel) {
         return LOADS.get(channel);
     }
 

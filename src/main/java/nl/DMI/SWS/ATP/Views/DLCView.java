@@ -2,20 +2,24 @@ package nl.DMI.SWS.ATP.Views;
 
 import javafx.geometry.Pos;
 import nl.DMI.SWS.ATP.Components.DLSlider;
-import nl.DMI.SWS.ATP.Models.Load;
-import nl.DMI.SWS.ATP.Service.DLService;
+import nl.DMI.SWS.ATP.Models.N3300AModule;
+import nl.DMI.SWS.ATP.Service.N3300AService;
 import javafx.scene.layout.HBox;
 
-public class DLView extends View {
-    DLService service;
-    public DLView() {
+import java.util.List;
+
+public class DLCView extends View {
+    N3300AService service;
+    private List<N3300AModule> loads;
+    public DLCView() {
         title = "Dynamic Load Control";
         HBox sliderContainer = new HBox(8);
         this.getChildren().add(sliderContainer);
         sliderContainer.setAlignment(Pos.TOP_CENTER);
-        service = new DLService();
+        service = new N3300AService();
         service.discoverLoads();
-        for(Load load: service.getLoads()) {
+        loads = service.getLoads();
+        for(N3300AModule load: service.getLoads()) {
             DLSlider slider = new DLSlider(load);
             sliderContainer.getChildren().add(slider.getContainer());
         }

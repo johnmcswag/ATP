@@ -13,19 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class InstrumentService {
-    private static List<String> getResourceNames() {
-        List<String> resources = new ArrayList<>();
-        JVisaResourceManager resourceManager = ResourceManager.getResourceManager();
-        try {
-            final String[] resourceNames = resourceManager.findResources();
-            if (resourceNames.length == 0) return resources;
-            resources = Arrays.asList(resourceNames);
-        } catch (JVisaException e) {
-            System.out.println("Error finding resources. Check GPIB cable.");
-            System.out.println(e.getMessage());
-        }
-        return resources;
-    }
 
     public static List<InstrumentInfoDTO> discover() {
         List<InstrumentInfoDTO> instruments = new ArrayList<>();
@@ -41,10 +28,25 @@ public class InstrumentService {
                 instrument.close();
                 instruments.add(new InstrumentInfoDTO(IDN, resourceName));
             } catch (Exception e) {
+                System.out.println("Unable to connect to device: " + resourceName);
                 System.out.println(e.getMessage());
                 instruments.add(new InstrumentInfoDTO("Not Found", resourceName));
             }
         }
         return instruments;
+    }
+
+    private static List<String> getResourceNames() {
+        List<String> resources = new ArrayList<>();
+        JVisaResourceManager resourceManager = ResourceManager.getResourceManager();
+        try {
+            final String[] resourceNames = resourceManager.findResources();
+            if (resourceNames.length == 0) return resources;
+            resources = Arrays.asList(resourceNames);
+        } catch (JVisaException e) {
+            ToastManager.showToast("Error finding resources. Check connection.", ToastType.WARNING);
+            System.out.println(e.getMessage());
+        }
+        return resources;
     }
 }

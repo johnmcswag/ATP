@@ -4,8 +4,8 @@ import nl.DMI.SWS.ATP.Components.DLSlider;
 import nl.DMI.SWS.ATP.DTO.InstrumentInfoDTO;
 import nl.DMI.SWS.ATP.Enum.ToastType;
 import nl.DMI.SWS.ATP.Exception.InstrumentException;
-import nl.DMI.SWS.ATP.Models.DynamicLoad;
-import nl.DMI.SWS.ATP.Models.Load;
+import nl.DMI.SWS.ATP.Models.N3300A;
+import nl.DMI.SWS.ATP.Models.N3300AModule;
 import nl.DMI.SWS.ATP.Singleton.ResourceManager;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
@@ -22,48 +22,49 @@ import java.util.stream.Collectors;
 
 import static nl.DMI.SWS.ATP.Util.Math.toFixed;
 
-public class DLService extends DeviceService {
-    private DynamicLoad DLLoad1;
-    private DynamicLoad DLLoad2;
-    private List<Load> loads = new ArrayList<>();
+public class N3300AService extends ThreadService {
+    private N3300A DLLoad1;
+    private N3300A DLLoad2;
+    private List<N3300AModule> loads = new ArrayList<>();
     private JVisaResourceManager rm;
 
-    public DLService() {
+    public N3300AService() {
         taskPeriod_ms = 100;
         rm = ResourceManager.getResourceManager();
         startExecutor();
     }
 
-    public List<DynamicLoad> discoverLoads() {
+    public List<N3300A> discoverLoads() {
         List<InstrumentInfoDTO> instruments = InstrumentService.discover();
         List<InstrumentInfoDTO> DLResources = instruments.stream().filter(i -> i.getIDN().contains("N3300A")).collect(Collectors.toList());
-        List<DynamicLoad> DLLoads = new ArrayList<>();
+        List<N3300A> DLLoads = new ArrayList<>();
         try {
             if(DLResources.size() != 2) throw new InstrumentException("Dynamic load missing. Are both turned on?");
-            DLLoad1 = new DynamicLoad(rm, DLResources.get(0).getResourceName());
-            DLLoad2 = new DynamicLoad(rm, DLResources.get(1).getResourceName());
+            DLLoad1 = new N3300A(rm, DLResources.get(0).getResourceName());
+            DLLoad2 = new N3300A(rm, DLResources.get(1).getResourceName());
             DLLoads.add(DLLoad1);
             DLLoads.add(DLLoad2);
 
             loads.addAll(DLLoad1.LOADS.values());
             loads.addAll(DLLoad2.LOADS.values());
         } catch (InstrumentException e) {
-            System.out.println("Error setting up dynamic loads.");
+            ToastManager.showToast(e.getMessage(), ToastType.ERROR);
             System.out.println(e.getMessage());
+            System.out.println(e);
         }
 
         return DLLoads;
     }
 
-    public DynamicLoad getDLLoad1() {
+    public N3300A getDLLoad1() {
         return DLLoad1;
     }
 
-    public DynamicLoad getDLLoad2() {
+    public N3300A getDLLoad2() {
         return DLLoad2;
     }
 
-    public List<Load> getLoads() {
+    public List<N3300AModule> getLoads() {
         return loads;
     }
 
@@ -71,18 +72,18 @@ public class DLService extends DeviceService {
     public void close() {
         super.close();
         try {
-            DLLoad1.close();
-            DLLoad2.close();
+            if(DLLoad1 != null) DLLoad1.close();
+            if(DLLoad2 != null) DLLoad2.close();
         } catch (Exception e) {
             System.out.println("Error closing Dynamic loads.");
-            System.out.println(e.getMessage());
+            System.out.println(e);
         }
     }
 
     @Override
     protected void updateTask() {
         try {
-            for (Load load : loads) {
+            for (N3300AModule load : loads) {
                 if (task.isCancelled() || task.isCancelled()) return;
                 DLSlider slider = load.getSlider();
                 if (slider.isEnabled() != load.isEnabled()) toggleDLSlider(slider);
@@ -92,14 +93,15 @@ public class DLService extends DeviceService {
                 setCurrTask(slider);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error in updateTask");
+            System.out.println(e);
         }
     }
 
     private void measureVoltTask(DLSlider slider) {
         if(task.isCancelled() || task.isCancelled()) return;
         VBox sliderContainer = slider.getContainer();
-        Load load = slider.getLoad();
+        N3300AModule load = slider.getLoad();
         try {
             double voltage = load.getVoltage();
             Platform.runLater(() -> {
@@ -115,7 +117,7 @@ public class DLService extends DeviceService {
     private void measureCurrTask(DLSlider slider) {
         if(task.isCancelled() || task.isCancelled()) return;
         VBox sliderContainer = slider.getContainer();
-        Load load = slider.getLoad();
+        N3300AModule load = slider.getLoad();
         try {
             double current = load.getCurrent();
             Platform.runLater(() -> {
@@ -133,7 +135,7 @@ public class DLService extends DeviceService {
     private void setCurrTask(DLSlider slider) {
         if(task.isCancelled() || task.isCancelled()) return;
         VBox sliderContainer = slider.getContainer();
-        Load load = slider.getLoad();
+        N3300AModule load = slider.getLoad();
         try {
             HBox controlWrapper = (HBox) sliderContainer.getChildren().get(3);
             VBox controlContainer = (VBox) controlWrapper.getChildren().get(0);
@@ -154,14 +156,15 @@ public class DLService extends DeviceService {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error in setCurrTask");
+            System.out.println(e);
         }
     }
 
     private void toggleDLSlider(DLSlider slider) {
         if(task.isCancelled() || task.isCancelled()) return;
         VBox sliderContainer = slider.getContainer();
-        Load load = slider.getLoad();
+        N3300AModule load = slider.getLoad();
 
         HBox controlWrapper = (HBox) sliderContainer.getChildren().get(3);
         VBox controlContainer = (VBox) controlWrapper.getChildren().get(0);

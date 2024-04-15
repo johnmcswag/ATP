@@ -7,11 +7,35 @@ import javafx.scene.control.Button;
 import nl.DMI.SWS.ATP.Util.ViewLoader;
 
 public class HomeView extends View {
+    private VBox optionContainer = new VBox(8);
 
     public HomeView() {
-        VBox optionContainer = new VBox(8);
-        optionContainer.setFillWidth(true);
 
+        setBaseStyle();
+
+        for (ViewType viewType: ViewType.values()) {
+            String displayName = viewType.getDisplayName();
+            if(displayName.equals("Home")) continue;
+
+            Button button = new Button(displayName);
+            button.getStyleClass().add("home-button");
+            button.setMaxWidth(Double.MAX_VALUE);
+            button.setOnAction((event) -> {
+                try {
+                    ViewLoader.setView(viewType);
+                } catch (Exception e) {
+                    System.out.println("Error loading view: " + displayName);
+                    System.out.println(e.getMessage());
+                }
+            });
+
+            optionContainer.getChildren().add(button);
+        }
+    }
+
+    private void setBaseStyle() {
+
+        optionContainer.setFillWidth(true);
         GridPane grid = new GridPane();
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(25);
@@ -35,24 +59,6 @@ public class HomeView extends View {
         grid.setAlignment(Pos.TOP_CENTER);
 
         this.getChildren().add(grid);
-
-        for (ViewType viewType: ViewType.values()) {
-            String displayName = viewType.getDisplayName();
-            if(displayName.equals("Home")) continue;
-
-            Button button = new Button(displayName);
-            button.setMaxWidth(Double.MAX_VALUE);
-            button.setOnAction((event) -> {
-                try {
-                    ViewLoader.setView(viewType);
-                } catch (Exception e) {
-                    System.out.println("Error loading view: " + displayName);
-                    System.out.println(e.getMessage());
-                }
-            });
-
-            optionContainer.getChildren().add(button);
-        }
     }
 
     @Override

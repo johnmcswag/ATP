@@ -1,7 +1,7 @@
 package nl.DMI.SWS.ATP.Components;
 
 import javafx.application.Platform;
-import nl.DMI.SWS.ATP.Models.Load;
+import nl.DMI.SWS.ATP.Models.N3300AModule;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -13,16 +13,16 @@ import javafx.scene.text.Text;
 
 import java.util.Optional;
 
-import static nl.DMI.SWS.ATP.util.Math.toFixed;
+import static nl.DMI.SWS.ATP.Util.Math.toFixed;
 
 public class DLSlider {
 
     private double sliderValue = 0.0;
     private final double steps = 0.1;
     private VBox container;
-    private Load load;
+    private N3300AModule load;
     private boolean isEnabled = false;
-    public DLSlider(Load load) {
+    public DLSlider(N3300AModule load) {
         this.load = load;
         load.setSlider(this);
 
@@ -164,7 +164,7 @@ public class DLSlider {
         return container;
     }
 
-    public Load getLoad() {
+    public N3300AModule getLoad() {
         return load;
     }
 

@@ -5,7 +5,7 @@ import nl.DMI.SWS.ATP.Exception.InstrumentException;
 
 import static nl.DMI.SWS.ATP.Util.Math.toFixed;
 
-public class Load {
+public class N3300AModule {
     private static int loadCount = 0;
     private static int currentLoadIndex = 0;
 
@@ -18,7 +18,7 @@ public class Load {
     private DLSlider slider = null;
     private boolean isEnabled = false;
 
-    public Load(int channel, Instrument instrument) throws InstrumentException {
+    public N3300AModule(int channel, Instrument instrument) throws InstrumentException {
         this.loadIndex = ++loadCount;
         this.channel = channel;
         INSTRUMENT = instrument;
