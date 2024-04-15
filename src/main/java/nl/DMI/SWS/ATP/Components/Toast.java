@@ -10,6 +10,7 @@ public class Toast extends Label {
         super(text);
 
         this.setAlignment(Pos.CENTER);
+        this.setWrapText(true);
         this.getStyleClass().add("toast");
 
         if(type == ToastType.INFO) {

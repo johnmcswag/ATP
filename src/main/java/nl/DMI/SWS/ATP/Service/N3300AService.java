@@ -2,6 +2,7 @@ package nl.DMI.SWS.ATP.Service;
 
 import nl.DMI.SWS.ATP.Components.DLSlider;
 import nl.DMI.SWS.ATP.DTO.InstrumentInfoDTO;
+import nl.DMI.SWS.ATP.Enum.ToastType;
 import nl.DMI.SWS.ATP.Exception.InstrumentException;
 import nl.DMI.SWS.ATP.Models.DynamicLoad;
 import nl.DMI.SWS.ATP.Models.Load;
@@ -12,13 +13,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import nl.DMI.SWS.ATP.Util.ToastManager;
 import xyz.froud.jvisa.JVisaResourceManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static nl.DMI.SWS.ATP.util.Math.toFixed;
+import static nl.DMI.SWS.ATP.Util.Math.toFixed;
 
 public class DLService extends DeviceService {
     private DynamicLoad DLLoad1;

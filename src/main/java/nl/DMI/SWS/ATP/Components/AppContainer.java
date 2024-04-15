@@ -6,8 +6,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import nl.DMI.SWS.ATP.Service.ToastManager;
-import nl.DMI.SWS.ATP.Service.ViewLoader;
+import nl.DMI.SWS.ATP.Util.ToastManager;
+import nl.DMI.SWS.ATP.Util.ViewLoader;
 
 public class AppContainer extends VBox {
     private final MenuBar menuBar = new MenuBar();

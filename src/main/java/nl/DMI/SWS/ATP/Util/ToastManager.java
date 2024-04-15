@@ -1,4 +1,4 @@
-package nl.DMI.SWS.ATP.Service;
+package nl.DMI.SWS.ATP.Util;
 
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -28,7 +28,7 @@ public class ToastManager {
 
             new Thread(() -> {
                 try {
-                    Thread.sleep(3000); // Laat de toast voor 3 seconden zien
+                    Thread.sleep(5000); // Laat de toast voor 3 seconden zien
                     Platform.runLater(() -> {
                         container.getChildren().remove(toast);
                     });

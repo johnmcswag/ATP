@@ -1,6 +1,7 @@
 package nl.DMI.SWS.ATP;
 
-import nl.DMI.SWS.ATP.Service.ViewLoader;
+import nl.DMI.SWS.ATP.Service.ThreadService;
+import nl.DMI.SWS.ATP.Util.ViewLoader;
 import nl.DMI.SWS.ATP.Singleton.ResourceManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -21,6 +22,7 @@ public class ATPApplication extends Application {
         try {
             ViewLoader.unload();
             rm.close();
+            ThreadService.shutdown();
             super.stop();
         } catch (Exception e) {
             System.out.println(e.getMessage());

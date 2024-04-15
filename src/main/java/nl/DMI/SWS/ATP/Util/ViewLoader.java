@@ -1,4 +1,4 @@
-package nl.DMI.SWS.ATP.Service;
+package nl.DMI.SWS.ATP.Util;
 
 import javafx.scene.image.Image;
 import nl.DMI.SWS.ATP.ATPApplication;
@@ -47,7 +47,7 @@ public class ViewLoader {
             stage.setTitle(view.getTitle());
         } catch (Exception e) {
             System.out.println("Error setting view: " + viewClass.getDisplayName());
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 

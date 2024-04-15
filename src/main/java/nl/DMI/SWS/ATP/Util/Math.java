@@ -1,4 +1,4 @@
-package nl.DMI.SWS.ATP.util;
+package nl.DMI.SWS.ATP.Util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

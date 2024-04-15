@@ -4,7 +4,7 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.*;
 import nl.DMI.SWS.ATP.Enum.ViewType;
 import javafx.scene.control.Button;
-import nl.DMI.SWS.ATP.Service.ViewLoader;
+import nl.DMI.SWS.ATP.Util.ViewLoader;
 
 public class HomeView extends View {
 

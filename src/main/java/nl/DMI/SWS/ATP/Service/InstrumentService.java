@@ -1,8 +1,10 @@
 package nl.DMI.SWS.ATP.Service;
 
 import nl.DMI.SWS.ATP.DTO.InstrumentInfoDTO;
+import nl.DMI.SWS.ATP.Enum.ToastType;
 import nl.DMI.SWS.ATP.Models.Instrument;
 import nl.DMI.SWS.ATP.Singleton.ResourceManager;
+import nl.DMI.SWS.ATP.Util.ToastManager;
 import xyz.froud.jvisa.JVisaException;
 import xyz.froud.jvisa.JVisaResourceManager;
 

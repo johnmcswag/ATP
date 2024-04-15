@@ -3,7 +3,7 @@ package nl.DMI.SWS.ATP.Models;
 import nl.DMI.SWS.ATP.Components.DLSlider;
 import nl.DMI.SWS.ATP.Exception.InstrumentException;
 
-import static nl.DMI.SWS.ATP.util.Math.toFixed;
+import static nl.DMI.SWS.ATP.Util.Math.toFixed;
 
 public class Load {
     private static int loadCount = 0;
