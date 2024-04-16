@@ -1,4 +1,4 @@
-package nl.DMI.SWS.ATP.Util;
+package nl.DMI.SWS.ATP.Singleton;
 
 import javafx.scene.image.Image;
 import nl.DMI.SWS.ATP.ATPApplication;
@@ -12,10 +12,13 @@ import javafx.stage.Stage;
 import java.util.Objects;
 
 public class ViewLoader {
+
+    private static ViewLoader instance;
+
     private Stage mainStage;
     private final static AppContainer mainContainer = new AppContainer();
 
-    public ViewLoader(Stage stage) {
+    private ViewLoader(Stage stage) {
         mainStage = stage;
 
         Scene mainScene = new Scene(mainContainer, 1280, 720);
@@ -32,7 +35,18 @@ public class ViewLoader {
         setHomeView();
     }
 
-    public static void setView(ViewType viewClass) {
+    public static synchronized ViewLoader getViewLoader() {
+        return instance;
+    }
+
+    public static synchronized ViewLoader getViewLoader(Stage stage) {
+        if (instance == null) {
+            instance = new ViewLoader(stage);
+        }
+        return instance;
+    }
+
+    public void setView(ViewType viewClass) {
         unload();
 
         try {
@@ -51,16 +65,16 @@ public class ViewLoader {
         }
     }
 
-    public static View getView() {
+    public View getView() {
         if(mainContainer.getContentPane().getChildren().size() < 2) return null;
         return (View) mainContainer.getContentPane().getChildren().get(1);
     }
 
-    public static void setHomeView() {
+    public void setHomeView() {
         setView(ViewType.MAINVIEW);
     }
 
-    public static void unload() {
+    public void unload() {
         View view = getView();
         if(view != null) view.unload();
     }

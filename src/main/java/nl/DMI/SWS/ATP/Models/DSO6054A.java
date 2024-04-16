@@ -5,13 +5,7 @@ import xyz.froud.jvisa.JVisaInstrument;
 import xyz.froud.jvisa.JVisaResourceManager;
 
 public class DSO6054A extends Oscilloscope {
-    public DSO6054A(JVisaResourceManager rm, String visaResourceName) throws InstrumentException {
-        super(rm, visaResourceName);
+    public DSO6054A(String visaResourceName) throws InstrumentException {
+        super(visaResourceName);
     }
-
-    public DSO6054A(JVisaInstrument jVisaInstrument) throws InstrumentException {
-        super(jVisaInstrument);
-    }
-
-
 }

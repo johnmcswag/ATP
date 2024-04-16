@@ -10,12 +10,13 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class Oscilloscope extends Instrument {
 
-    public Oscilloscope(JVisaResourceManager rm, String visaResourceName) throws InstrumentException {
-        super(rm, visaResourceName);
+    public Oscilloscope(String visaResourceName) throws InstrumentException {
+        super(visaResourceName);
     }
 
     public Oscilloscope(JVisaInstrument jVisaInstrument) throws InstrumentException {
         super(jVisaInstrument);
+
     }
 
     /*TODO:

@@ -26,11 +26,9 @@ public class N3300AService extends ThreadService {
     private N3300A DLLoad1;
     private N3300A DLLoad2;
     private List<N3300AModule> loads = new ArrayList<>();
-    private JVisaResourceManager rm;
 
     public N3300AService() {
         taskPeriod_ms = 100;
-        rm = ResourceManager.getResourceManager();
         startExecutor();
     }
 
@@ -40,8 +38,8 @@ public class N3300AService extends ThreadService {
         List<N3300A> DLLoads = new ArrayList<>();
         try {
             if(DLResources.size() != 2) throw new InstrumentException("Dynamic load missing. Are both turned on?");
-            DLLoad1 = new N3300A(rm, DLResources.get(0).getResourceName());
-            DLLoad2 = new N3300A(rm, DLResources.get(1).getResourceName());
+            DLLoad1 = new N3300A(DLResources.get(0).getResourceName());
+            DLLoad2 = new N3300A(DLResources.get(1).getResourceName());
             DLLoads.add(DLLoad1);
             DLLoads.add(DLLoad2);
 

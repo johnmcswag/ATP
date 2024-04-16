@@ -10,7 +10,7 @@ public class N3300AModule {
     private static int currentLoadIndex = 0;
 
     private final int channel;
-    private final Instrument INSTRUMENT;
+    private final N3300A INSTRUMENT;
     private final double MAX_CURRENT;
     private final double MAX_VOLTAGE;
     private final int ROUNDINGDIGITS = 3;
@@ -18,7 +18,7 @@ public class N3300AModule {
     private DLSlider slider = null;
     private boolean isEnabled = false;
 
-    public N3300AModule(int channel, Instrument instrument) throws InstrumentException {
+    public N3300AModule(int channel, N3300A instrument) throws InstrumentException {
         this.loadIndex = ++loadCount;
         this.channel = channel;
         INSTRUMENT = instrument;

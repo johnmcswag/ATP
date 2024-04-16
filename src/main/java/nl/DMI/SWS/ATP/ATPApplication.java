@@ -1,27 +1,24 @@
 package nl.DMI.SWS.ATP;
 
 import nl.DMI.SWS.ATP.Service.ThreadService;
-import nl.DMI.SWS.ATP.Util.ViewLoader;
+import nl.DMI.SWS.ATP.Singleton.ViewLoader;
 import nl.DMI.SWS.ATP.Singleton.ResourceManager;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import xyz.froud.jvisa.JVisaResourceManager;
 
 public class ATPApplication extends Application {
-    JVisaResourceManager rm;
-    ViewLoader vl;
     @Override
     public void start(Stage mainStage) {
-        rm = ResourceManager.getResourceManager();
+        ResourceManager.getResourceManager();
         mainStage.setTitle("Made by Jarno :)");
-        vl = new ViewLoader(mainStage);
+        ViewLoader.getViewLoader(mainStage);
     }
 
     @Override
     public void stop() {
         try {
-            ViewLoader.unload();
-            rm.close();
+            ViewLoader.getViewLoader().unload();
+            ResourceManager.getResourceManager().closeInstruments();
             ThreadService.shutdown();
             super.stop();
         } catch (Exception e) {

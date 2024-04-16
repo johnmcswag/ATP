@@ -7,7 +7,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import nl.DMI.SWS.ATP.Util.ToastManager;
-import nl.DMI.SWS.ATP.Util.ViewLoader;
+import nl.DMI.SWS.ATP.Singleton.ViewLoader;
 
 public class AppContainer extends VBox {
     private final MenuBar menuBar = new MenuBar();
@@ -22,7 +22,7 @@ public class AppContainer extends VBox {
         menuBar.getMenus().add(menu);
 
         MenuItem item1 = new MenuItem("Home");
-        item1.setOnAction((event) -> ViewLoader.setHomeView());
+        item1.setOnAction((event) -> ViewLoader.getViewLoader().setHomeView());
 
         menu.getItems().addAll(item1);
     }

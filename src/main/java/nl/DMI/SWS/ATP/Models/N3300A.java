@@ -10,14 +10,8 @@ public class N3300A extends Instrument {
     public final HashMap<Integer, N3300AModule> LOADS = new HashMap<>();
 
 
-    public N3300A(JVisaResourceManager resourceManager, String visaResourceName) throws InstrumentException {
-        super(resourceManager, visaResourceName);
-        CHANNEL_COUNT = Integer.parseInt(query("CHANNEL? MAX"));
-        setupLoads();
-    }
-
-    public N3300A(JVisaInstrument jVisaInstrument) throws InstrumentException {
-        super(jVisaInstrument);
+    public N3300A(String visaResourceName) throws InstrumentException {
+        super(visaResourceName);
         CHANNEL_COUNT = Integer.parseInt(query("CHANNEL? MAX"));
         setupLoads();
     }

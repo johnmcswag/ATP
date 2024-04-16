@@ -1,25 +1,30 @@
 package nl.DMI.SWS.ATP.Models;
 
 import nl.DMI.SWS.ATP.Exception.InstrumentException;
+import nl.DMI.SWS.ATP.Singleton.ResourceManager;
 import xyz.froud.jvisa.*;
 
 public class Instrument {
-    public final JVisaInstrument JVISA_INSTRUMENT;
+    private JVisaInstrument JVISA_INSTRUMENT;
+    private final String resourceName;
+    protected final JVisaResourceManager rm = ResourceManager.getResourceManager().getVisaResourceManager();
 
-    public Instrument(JVisaResourceManager rm, String visaResourceName) throws InstrumentException {
-        try {
-            JVISA_INSTRUMENT = rm.openInstrument(visaResourceName);
-            reset();
-        } catch (JVisaException ex) {
-            throw new InstrumentException(ex);
-        }
+    public Instrument(String resourceName) throws InstrumentException {
+        this.resourceName = resourceName;
+        open();
     }
 
-    public Instrument(JVisaInstrument jVisaInstrument) throws InstrumentException {
-        JVISA_INSTRUMENT = jVisaInstrument;
+    public Instrument(JVisaInstrument instrument) {
+        this.JVISA_INSTRUMENT = instrument;
+        this.resourceName = instrument.RESOURCE_NAME;;
+    }
+
+    public void open() throws InstrumentException {
         try {
+            JVISA_INSTRUMENT = rm.openInstrument(resourceName);
             reset();
-        } catch (InstrumentException ex) {
+        } catch (JVisaException ex) {
+            System.out.println("Issue with opening connection");
             throw new InstrumentException(ex);
         }
     }
@@ -40,7 +45,6 @@ public class Instrument {
     protected String query(String command) throws InstrumentException {
         try {
             String value = JVISA_INSTRUMENT.queryString(command);
-//            JVISA_INSTRUMENT.queryString("*OPC?");
             return value;
         } catch (JVisaException ex) {
             System.out.println("Error with querying command: " + command);
@@ -51,7 +55,7 @@ public class Instrument {
     protected void write(String command) throws InstrumentException {
         try {
             JVISA_INSTRUMENT.write(command);
-            JVISA_INSTRUMENT.queryString("*OPC?");
+//            JVISA_INSTRUMENT.queryString("*OPC?");
         } catch (JVisaException ex) {
             System.out.println("Error with writing command: " + command);
             throw new InstrumentException(ex);

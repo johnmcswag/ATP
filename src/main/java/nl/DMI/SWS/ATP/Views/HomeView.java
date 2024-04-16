@@ -5,7 +5,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import nl.DMI.SWS.ATP.Enum.ViewType;
 import javafx.scene.control.Button;
-import nl.DMI.SWS.ATP.Util.ViewLoader;
+import nl.DMI.SWS.ATP.Singleton.ViewLoader;
 
 import java.util.Arrays;
 
@@ -42,7 +42,7 @@ public class HomeView extends View {
             button.setMaxWidth(Double.MAX_VALUE);
             button.setOnAction((event) -> {
                 try {
-                    ViewLoader.setView(viewType);
+                    ViewLoader.getViewLoader().setView(viewType);
                 } catch (Exception e) {
                     System.out.println("Error loading view: " + displayName);
                     System.out.println(e.getMessage());
