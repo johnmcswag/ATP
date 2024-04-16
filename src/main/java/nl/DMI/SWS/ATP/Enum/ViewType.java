@@ -7,8 +7,6 @@ import nl.DMI.SWS.ATP.Views.View;
 import javafx.scene.Parent;
 
 public enum ViewType {
-    MAINVIEW(HomeView.class, "Home"),
-    VIEW1(DLView.class, "Dynamic Load Control");
     VIEW1(DLCView.class, "Dynamic Load Control"),
     View2(TestView.class, "Test"),
     MAINVIEW(HomeView.class, "Home");
