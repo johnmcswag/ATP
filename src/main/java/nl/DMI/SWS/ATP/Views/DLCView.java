@@ -19,7 +19,7 @@ public class DLCView extends View {
         service = new N3300AService();
         service.discoverLoads();
         loads = service.getLoads();
-        for(N3300AModule load: service.getLoads()) {
+        for(N3300AModule load: loads) {
             DLSlider slider = new DLSlider(load);
             sliderContainer.getChildren().add(slider.getContainer());
         }

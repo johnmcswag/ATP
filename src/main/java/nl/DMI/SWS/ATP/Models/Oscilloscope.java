@@ -19,9 +19,11 @@ public abstract class Oscilloscope extends Instrument {
     }
 
     /*TODO:
+     * === TIMebase ===
      * - Timebase delay
      * - Timebase Reference
-     * === Universal Channel ===
+     * === CHANnel ===
+     * - Enable/Disable
      * - BW Limit
      * - Coupling
      * - Display aka enabled/disabled
@@ -34,14 +36,18 @@ public abstract class Oscilloscope extends Instrument {
      * - Protection detection
      * - Scale
      * - Units
-     * === MARKER ===
+     * === MARKer ===
      * - MODE???? - LATER
      * - Set source
      * - X1 position
      * - X2 position
      * - Y1 position
      * - Y2 position
-     *
+     * - Read x Delta
+     * - Read Y Delta
+     * === TRIGger ===
+     * - Sweep
+     * - Edge:Slope
      */
 
     private TimeBase timeBaseRange = new TimeBase(100, TimeUnit.MICROSECONDS);
