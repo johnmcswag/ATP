@@ -1,21 +1,41 @@
 package nl.DMI.SWS.ATP.Views;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import nl.DMI.SWS.ATP.Enum.ViewType;
 import javafx.scene.control.Button;
 import nl.DMI.SWS.ATP.Util.ViewLoader;
 
+import java.util.Arrays;
+
 public class HomeView extends View {
     private VBox optionContainer = new VBox(8);
 
     public HomeView() {
-
         setBaseStyle();
+        loadViewList();
+    }
 
+    private void loadViewListTest() {
+        int[] array = new int[25];
+        Arrays.fill(array, 0);
+
+        for (int i = 0; i < array.length; i++) {
+
+            Button button = new Button("Test-" + i);
+            button.getStyleClass().add("home-button");
+            button.setMaxWidth(Double.MAX_VALUE);
+
+            optionContainer.getChildren().add(button);
+        }
+
+    }
+
+    private void loadViewList() {
         for (ViewType viewType: ViewType.values()) {
             String displayName = viewType.getDisplayName();
-            if(displayName.equals("Home")) continue;
+            if(viewType.equals(ViewType.MAINVIEW)) continue;
 
             Button button = new Button(displayName);
             button.getStyleClass().add("home-button");
@@ -31,9 +51,14 @@ public class HomeView extends View {
 
             optionContainer.getChildren().add(button);
         }
+
     }
 
+
     private void setBaseStyle() {
+        ScrollPane scrollWrapper = new ScrollPane();
+        scrollWrapper.setContent(optionContainer);
+        scrollWrapper.setFitToWidth(true);
 
         optionContainer.setFillWidth(true);
         GridPane grid = new GridPane();
@@ -55,7 +80,7 @@ public class HomeView extends View {
         row1.setFillHeight(true);
         grid.getRowConstraints().add(row1);
 
-        grid.add(optionContainer, 1, 0, 1, 1);
+        grid.add(scrollWrapper, 1, 0, 1, 1);
         grid.setAlignment(Pos.TOP_CENTER);
 
         this.getChildren().add(grid);

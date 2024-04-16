@@ -1,6 +1,31 @@
 .root {
     -fx-faint-focus-color: transparent;
     -fx-focus-color:transparent;
+    -fx--color-main: #E17000;
+    -fx--color-secondary: #747678;
+    -fx--color-tertiary: #0E61AA;
+    -fx--color-text: black;
+    -fx--color-text-inv: white;
+}
+
+* {
+    -fx-font-family: Arial, sans-serif;
+}
+
+.scroll-pane{
+    -fx-background-color:transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.home-button {
+    -fx-text-fill: -fx--color-text-inv;
+    -fx-background-color: -fx--color-tertiary;
+    -fx-font-size: 14;
+    -fx-font-weight: 600;
+
 }
 
 .sliderLabel.info {
