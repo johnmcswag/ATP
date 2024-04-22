@@ -11,8 +11,6 @@ import nl.DMI.SWS.ATP.Exception.InstrumentException;
 import nl.DMI.SWS.ATP.Singleton.ContinuousTask;
 import nl.DMI.SWS.ATP.Singleton.TaskProducer;
 
-import java.util.concurrent.Future;
-
 import static nl.DMI.SWS.ATP.Util.Math.toFixed;
 
 public class N3300AModule implements TaskProducer {
@@ -37,6 +35,7 @@ public class N3300AModule implements TaskProducer {
         changeToChannel();
         String MAX_CURRENT = INSTRUMENT.query("CURRENT? MAX");
         String MAX_VOLTAGE = INSTRUMENT.query("VOLTAGE? MAX");
+        INSTRUMENT.write("CURR:PROT:STAT 1; CURR:PROT 1");
         // Convert to int from scientific value
         this.MAX_CURRENT = Double.parseDouble(MAX_CURRENT);
         this.MAX_VOLTAGE = Double.parseDouble(MAX_VOLTAGE);
@@ -74,7 +73,7 @@ public class N3300AModule implements TaskProducer {
             System.out.println("Current is too high.");
         }
         changeToChannel();
-        INSTRUMENT.write("CURRENT " + current);
+        INSTRUMENT.write("CURRENT " + current + "CURR:PROT " + current);
     }
 
     public double getVoltage() throws InstrumentException {
