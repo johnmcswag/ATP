@@ -8,7 +8,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import nl.DMI.SWS.ATP.Components.DLSlider;
 import nl.DMI.SWS.ATP.Exception.InstrumentException;
-import nl.DMI.SWS.ATP.Singleton.TaskManager;
+import nl.DMI.SWS.ATP.Singleton.ContinuousTask;
 import nl.DMI.SWS.ATP.Singleton.TaskProducer;
 
 import java.util.concurrent.Future;
@@ -28,7 +28,7 @@ public class N3300AModule implements TaskProducer {
     private DLSlider slider = null;
     private boolean isEnabled = false;
 
-    private Future<?> task;
+    private ContinuousTask taskHandler = new ContinuousTask(this::scheduledTask, 25L);
 
     public N3300AModule(int channel, N3300A instrument) throws InstrumentException {
         this.loadIndex = ++loadCount;
@@ -40,6 +40,7 @@ public class N3300AModule implements TaskProducer {
         // Convert to int from scientific value
         this.MAX_CURRENT = Double.parseDouble(MAX_CURRENT);
         this.MAX_VOLTAGE = Double.parseDouble(MAX_VOLTAGE);
+//        taskHandler.execute();
     }
 
     private void changeToChannel() throws InstrumentException {
@@ -52,12 +53,14 @@ public class N3300AModule implements TaskProducer {
         changeToChannel();
         INSTRUMENT.write("OUTP ON");
         isEnabled = true;
+        taskHandler.execute();
     }
 
     public void disable() throws InstrumentException {
         changeToChannel();
         INSTRUMENT.write("OUTP OFF");
         isEnabled = false;
+        taskHandler.stop();
     }
 
     public double getCurrent() throws InstrumentException {
@@ -94,17 +97,6 @@ public class N3300AModule implements TaskProducer {
     @Override
     public String toString() {
         return "Load-" + loadIndex;
-    }
-
-    @Override
-    public void startTask() {
-        task = TaskManager.submitTask(this::scheduledTask);
-    }
-
-    @Override
-    public void stopTask() {
-        if(task.isCancelled()) return;
-        TaskManager.closeTask(task);
     }
 
     @Override

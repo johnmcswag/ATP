@@ -6,7 +6,6 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class TaskManager {
-    static int taskPeriod_ms = 25;
     private static final ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
     public static void shutdown() {
@@ -17,7 +16,11 @@ public class TaskManager {
         task.cancel(true);
     }
 
-    public static Future<?> submitTask(Runnable task) {
-        return executor.scheduleAtFixedRate(task, 0, TaskManager.taskPeriod_ms, TimeUnit.MILLISECONDS);
+    public static Future<?> submitTask(Runnable task, Long periodms) {
+        if(periodms == 0L) {
+            return executor.submit(task);
+        } else {
+            return executor.scheduleAtFixedRate(task, 0, periodms, TimeUnit.MILLISECONDS);
+        }
     }
 }
