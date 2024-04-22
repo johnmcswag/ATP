@@ -85,9 +85,4 @@ public class HomeView extends View {
 
         this.getChildren().add(grid);
     }
-
-    @Override
-    public void unload() {
-        super.unload();
-    }
 }

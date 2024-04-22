@@ -16,7 +16,7 @@ public class ViewLoader {
     private static ViewLoader instance;
 
     private Stage mainStage;
-    private final static AppContainer mainContainer = new AppContainer();
+    private final AppContainer mainContainer = new AppContainer();
 
     private ViewLoader(Stage stage) {
         mainStage = stage;
@@ -47,10 +47,12 @@ public class ViewLoader {
     }
 
     public void setView(ViewType viewClass) {
-        unload();
+//        unload();
+        System.out.println("Setting view: " + viewClass.getDisplayName());
 
         try {
             View view = (View) viewClass.getViewClass().getDeclaredConstructor().newInstance();
+            System.out.println(view);
 
             StackPane contentPane = mainContainer.getContentPane();
             if(contentPane.getChildren().size() > 1) {
@@ -62,6 +64,7 @@ public class ViewLoader {
         } catch (Exception e) {
             System.out.println("Error setting view: " + viewClass.getDisplayName());
             e.printStackTrace();
+            if(viewClass != ViewType.MAINVIEW) setHomeView();
         }
     }
 

@@ -3,9 +3,7 @@ package nl.DMI.SWS.ATP.Models;
 import nl.DMI.SWS.ATP.Util.TimeBase;
 import nl.DMI.SWS.ATP.Exception.InstrumentException;
 import xyz.froud.jvisa.JVisaInstrument;
-import xyz.froud.jvisa.JVisaResourceManager;
 
-import java.sql.Time;
 import java.util.concurrent.TimeUnit;
 
 public abstract class Oscilloscope extends Instrument {
@@ -60,5 +58,4 @@ public abstract class Oscilloscope extends Instrument {
     protected TimeBase getTimeBaseRange() {
         return timeBaseRange;
     }
-
 }

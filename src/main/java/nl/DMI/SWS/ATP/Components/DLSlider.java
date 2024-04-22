@@ -115,8 +115,6 @@ public class DLSlider {
     }
 
     private void toggleDLSlider(boolean state) {
-        System.out.println("toggleDLSlider");
-        System.out.println("State: " + state);
         this.isEnabled = state;
     }
 

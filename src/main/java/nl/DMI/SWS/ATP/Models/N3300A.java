@@ -1,13 +1,16 @@
 package nl.DMI.SWS.ATP.Models;
 
+import nl.DMI.SWS.ATP.Components.DLSlider;
 import nl.DMI.SWS.ATP.Exception.InstrumentException;
 import xyz.froud.jvisa.*;
-import java.util.HashMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class N3300A extends Instrument {
 
     private final int CHANNEL_COUNT;
-    public final HashMap<Integer, N3300AModule> LOADS = new HashMap<>();
+    private final List<N3300AModule> LOADS = new ArrayList<>();
 
 
     public N3300A(String visaResourceName) throws InstrumentException {
@@ -16,10 +19,20 @@ public class N3300A extends Instrument {
         setupLoads();
     }
 
+    public N3300A(JVisaInstrument instrument) throws InstrumentException {
+        super(instrument);
+        CHANNEL_COUNT = Integer.parseInt(query("CHANNEL? MAX"));
+        setupLoads();
+    }
+
     private void setupLoads() {
         for (int i = 1; i <= CHANNEL_COUNT; i++) {
             try {
-                LOADS.put(i, new N3300AModule(i, this));
+                N3300AModule module = new N3300AModule(i, this);
+                LOADS.add(module);
+                new DLSlider(module);
+//                TaskManager.getTaskManager().addTask(module::scheduledTask);
+                module.startTask();
             } catch (InstrumentException e) {
                 System.out.println("Issue with load: " + i);
                 e.printStackTrace();
@@ -27,8 +40,17 @@ public class N3300A extends Instrument {
         }
     }
 
-    public N3300AModule getLoad(int channel) {
-        return LOADS.get(channel);
+    public List<N3300AModule> getLoads() {
+        return LOADS;
+    }
+
+    @Override
+    public void close() throws InstrumentException {
+        for (N3300AModule load : LOADS) {
+            load.stopTask();
+        }
+
+        super.close();
     }
 
     @Override
